@@ -2,7 +2,8 @@
 import { GoogleGenAI } from "@google/genai";
 import { DiagnosticReport, Patient } from "../types";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || '' });
+// Always use named parameter for apiKey and use process.env.API_KEY directly.
+const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 export const getDiagnosticInterpretation = async (patient: Patient, report: DiagnosticReport): Promise<string> => {
   const model = 'gemini-3-flash-preview';
@@ -31,6 +32,7 @@ export const getDiagnosticInterpretation = async (patient: Patient, report: Diag
         topP: 0.9,
       }
     });
+    // The result.text property directly returns the string output.
     return result.text || "Unable to generate interpretation.";
   } catch (error) {
     console.error("AI Interpretation Error:", error);
